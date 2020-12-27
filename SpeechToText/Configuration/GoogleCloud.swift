@@ -8,5 +8,6 @@
 import Foundation
 
 struct GoogleCloud {
+    // INSERT YOUR API_KEY HERE
     static let key = ""
 }

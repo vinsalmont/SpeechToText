@@ -14,11 +14,24 @@ struct RecordButton: View {
 
     var body: some View {
         RoundedButton(
-            title: isRecording ? "Stop Recording" : "Record", textColor: Color.white,
-            backgroundColor: isRecording ? Color.red : Color.blue,
-            iconSystemName: isRecording ? "stop.fill" :  "largecircle.fill.circle",
+            title: getTitle(),
+            textColor: Color.white,
+            backgroundColor: getBackgroudColor(),
+            iconSystemName: getIcon(),
             action: action
-        )
+        ).accessibility(label: Text(getTitle()))
+    }
+
+    private func getTitle() -> String {
+        return isRecording ? "Stop Recording" : "Record"
+    }
+
+    private func getBackgroudColor() -> Color {
+        return isRecording ? Color.red : Color.blue
+    }
+
+    private func getIcon() -> String {
+        return isRecording ? "stop.fill" :  "largecircle.fill.circle"
     }
 }
 

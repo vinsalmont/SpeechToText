@@ -22,6 +22,7 @@ struct RoundedButton: View {
                 Image(systemName: iconSystemName)
                 Text(title)
                     .bold()
+                    .font(.system(size: 12))
                 Spacer()
             }
         }

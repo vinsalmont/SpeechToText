@@ -11,11 +11,6 @@ class SpeechManager {
     static let shared = SpeechManager()
 
     private let speechToTextURL = "https://speech.googleapis.com/v1/speech:recognize"
-    private let baseURL = "https://texttospeech.googleapis.com/v1beta1/text:synthesize"
-
-    func getSpeech(from text: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) {
-
-    }
 
     func getText(from speech: Data, success: @escaping (([Alternatives]) -> Void), failure: @escaping (() -> Void)) {
         let urlString = "\(speechToTextURL)?key=\(GoogleCloud.key)"
@@ -31,7 +26,7 @@ class SpeechManager {
         request.httpMethod = "POST"
 
         let configParameters: [String : Any] = [
-            "encoding": "LINEAR16",
+            "encoding": "FLAC",
             "sampleRateHertz": 16000,
             "languageCode": "en-US",
             "maxAlternatives": 30,
@@ -62,7 +57,11 @@ class SpeechManager {
 
             do {
                 let result = try JSONDecoder().decode(GoogleSpeechResult.self, from: data)
-                success(result.results.first!.alternatives)
+                guard let firstAlternative = result.results.first?.alternatives else {
+                    failure()
+                    return
+                }
+                success(firstAlternative)
             } catch {
                 failure()
             }

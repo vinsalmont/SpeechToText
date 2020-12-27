@@ -11,7 +11,7 @@ import SwiftUI
 struct SpeechToTextApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }

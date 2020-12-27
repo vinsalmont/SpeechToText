@@ -34,6 +34,7 @@ class AudioRecorderManager: NSObject, ObservableObject {
 
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
+            try recordingSession.setCategory(.playAndRecord, mode: .default, options: [.duckOthers])
             try recordingSession.setActive(true)
         } catch {
             failure()
@@ -44,14 +45,17 @@ class AudioRecorderManager: NSObject, ObservableObject {
             return
         }
 
-        let audioFilename = documentPath.appendingPathComponent("speech.wav")
+        let audioFilename = documentPath.appendingPathComponent("speech.flac")
 
         let settings = [
-            AVFormatIDKey: Int(kAudioFormatLinearPCM),
+            AVFormatIDKey: Int(kAudioFormatFLAC),
             AVSampleRateKey: 16000,
             AVNumberOfChannelsKey: 1,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-        ]
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
+            AVLinearPCMBitDepthKey: 16,
+            AVLinearPCMIsBigEndianKey: false,
+            AVLinearPCMIsFloatKey: false,
+        ] as [String : Any]
 
         do {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
